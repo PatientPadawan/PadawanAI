@@ -9,7 +9,7 @@ const DashboardPage = () => {
 
   const mutation = useMutation({
     mutationFn: async (text) => {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chats`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/createChat`, {
         method: "POST",
         credentials: "include",
         headers: {

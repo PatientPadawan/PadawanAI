@@ -40,7 +40,7 @@ const NewPrompt = ({ data }) => {
   const mutation = useMutation({
     mutationFn: async () => {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/chats/${data._id}`,
+        `${import.meta.env.VITE_API_URL}/updateChat/${data._id}`,
         {
           method: "PUT",
           credentials: "include",
