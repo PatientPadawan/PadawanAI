@@ -4,8 +4,9 @@ import Upload from "../upload/Upload";
 import { IKImage } from "imagekitio-react";
 import model from "../../lib/gemini";
 import Markdown from "react-markdown";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const NewPrompt = () => {
+const NewPrompt = ({ data }) => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [img, setImg] = useState({
@@ -17,14 +18,10 @@ const NewPrompt = () => {
 
   const chat = model.startChat({
     history: [
-      {
-        role: "user",
-        parts: [{ text: "Hello, I have 2 dogs in my house." }],
-      },
-      {
-        role: "model",
-        parts: [{ text: "Great to meet you. What would you like to know?" }],
-      },
+      data?.history.map(({ role, parts }) => ({
+        role,
+        parts: [{ text: parts[0].text }],
+      })),
     ],
     generationConfig: {
       // maxOutputTokens: 100,
@@ -32,35 +29,88 @@ const NewPrompt = () => {
   });
 
   const endRef = useRef(null);
+  const formRef = useRef(null);
 
   useEffect(() => {
     endRef.current.scrollIntoView({ behavior: "smooth" });
-  }, [question, answer, img.dbData]);
+  }, [data, question, answer, img.dbData]);
 
-  const add = async (prompt) => {
-    setQuestion(prompt);
+  const queryClient = useQueryClient();
 
-    const result = await chat.sendMessageStream(
-      Object.entries(img.aiData).length ? [img.aiData, prompt] : [prompt]
-    );
-    let responseText = "";
-    for await (const chunk of result.stream) {
-      const chunkText = chunk.text();
-      console.log(chunkText);
-      responseText += chunkText;
-      setAnswer(responseText);
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/chats/${data._id}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            question: question.length ? question : undefined,
+            answer,
+            img: img.dbData?.filePath || undefined,
+          }),
+        }
+      );
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient
+        .invalidateQueries({ queryKey: ["chat", data._id] })
+        .then(() => {
+          formRef.current.reset();
+          setQuestion("");
+          setAnswer("");
+          setImg({ isLoading: false, error: "", dbData: {}, aiData: {} });
+        });
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  const add = async (text, isInitial) => {
+    if (!isInitial) setQuestion(text);
+
+    try {
+      const result = await chat.sendMessageStream(
+        Object.entries(img.aiData).length ? [img.aiData, text] : [text]
+      );
+      let responseText = "";
+      for await (const chunk of result.stream) {
+        const chunkText = chunk.text();
+        console.log(chunkText);
+        responseText += chunkText;
+        setAnswer(responseText);
+      }
+
+      mutation.mutate();
+    } catch (err) {
+      console.log(err);
     }
-    setImg({ isLoading: false, error: "", dbData: {}, aiData: {} });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const prompt = e.target.prompt.value;
-    if (!prompt) return;
+    const text = e.target.text.value;
+    if (!text) return;
 
-    add(prompt);
+    add(text, false);
   };
+
+  // CAN BE REMOVED FOR PRODUCTION DEPLOYMENT
+  const hasRun = useRef(false);
+  useEffect(() => {
+    if (!hasRun.current) {
+      if (data?.history?.length === 1) {
+        add(data.history[0].parts[0].text, true);
+      }
+    }
+    hasRun.current = true;
+  }, []);
 
   return (
     <>
@@ -81,12 +131,12 @@ const NewPrompt = () => {
         </div>
       )}
       <div className="end-chat" ref={endRef} />
-      <form className="new-form" onSubmit={handleSubmit}>
+      <form className="new-form" onSubmit={handleSubmit} ref={formRef}>
         <Upload setImg={setImg} />
         <input id="file" type="file" multiple={false} hidden />
         <input
           id="new-prompt"
-          name="prompt"
+          name="text"
           type="text"
           placeholder="Ask me anything..."
         />

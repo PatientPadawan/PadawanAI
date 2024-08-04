@@ -17,9 +17,9 @@ const LandingPage = () => {
         <h1>Padawan AI</h1>
         <h2>Supercharge your creativity and productivity</h2>
         <h3>
-          An AI-driven chatbot providing natural language understanding
-          and interactive responses, showcasing advanced language model
-          capabilities for seamless user interactions.
+          An AI-driven chatbot providing natural language understanding and
+          interactive responses, showcasing advanced language model capabilities
+          for seamless user interactions.
         </h3>
         <Link to="/dashboard">Get Started</Link>
       </div>

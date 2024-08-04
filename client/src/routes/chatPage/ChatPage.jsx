@@ -1,77 +1,52 @@
 import "./chatPage.css";
 import NewPrompt from "../../components/newPrompt/NewPrompt";
+import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "react-router-dom";
+import Markdown from "react-markdown";
+import { IKImage } from "imagekitio-react";
 
 const ChatPage = () => {
+  const path = useLocation().pathname;
+  const chatId = path.split("/").pop();
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ["chat", chatId],
+    queryFn: () =>
+      fetch(`${import.meta.env.VITE_API_URL}/api/chats/${chatId}`, {
+        credentials: "include",
+      }).then((res) => res.json()),
+  });
+
   return (
     <div className="chat-page">
       <div className="wrapper">
         <div className="chat">
-          <div className="message">Test Message from AI</div>
-          <div className="message user">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from user</div>
-          <div className="message">Test Message from AI</div>
-          <NewPrompt />
+          {isPending
+            ? "Loading..."
+            : error
+            ? "Something went wrong!"
+            : data?.history?.map((msg, i) => (
+                <>
+                  {msg.img && (
+                    <IKImage
+                      urlEndpoint={import.meta.env.VITE_IMAGE_KIT_ENDPOINT}
+                      path={msg.img}
+                      height={300}
+                      width={400}
+                      transformation={[{ height: 300, width: 400 }]}
+                      loading="lazy"
+                      lqip={{ active: true, quality: 20 }}
+                    />
+                  )}
+                  <div
+                    className={msg.role === "user" ? "message user" : "message"}
+                    key={i}
+                  >
+                    <Markdown>{msg.parts[0].text}</Markdown>
+                  </div>
+                </>
+              ))}
+          {data && <NewPrompt data={data} />}
         </div>
       </div>
     </div>
