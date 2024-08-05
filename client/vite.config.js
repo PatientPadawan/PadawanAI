@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/.netlify': {
+      '/.netlify/functions': {
         target: 'https://patientpadawan.dev',
         changeOrigin: true,
         secure: false,
