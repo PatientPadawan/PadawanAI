@@ -13,6 +13,8 @@ const ChatList = () => {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/getUserChats`,
         {
+          method: "GET",
+          mode: "cors",
           credentials: "include",
           headers: {
             Authorization: `Bearer ${token}`,
