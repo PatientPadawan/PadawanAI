@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import Markdown from "react-markdown";
 import { IKImage } from "imagekitio-react";
 import { useAuth } from "@clerk/clerk-react";
+import React from "react";
 
 const ChatPage = () => {
   const { getToken } = useAuth();
