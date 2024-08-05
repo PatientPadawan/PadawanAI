@@ -17,11 +17,17 @@ const DashboardPage = () => {
         },
         body: JSON.stringify({ text }),
       });
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
       return await res.json();
     },
-    onSuccess: (id) => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["userChats"] });
-      navigate(`/dashboard/chats/${id}`);
+      navigate(`/dashboard/chats/${data.id}`);
+    },
+    onError: (error) => {
+      console.error("Mutation error:", error);
     },
   });
 
