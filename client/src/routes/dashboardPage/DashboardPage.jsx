@@ -1,18 +1,23 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import "./dashboardPage.css";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@clerk/clerk-react";
 
 const DashboardPage = () => {
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
 
+  const { getToken } = useAuth();
+
   const mutation = useMutation({
     mutationFn: async (text) => {
+      const token = await getToken();
       const res = await fetch(`${import.meta.env.VITE_API_URL}/createChat`, {
         method: "POST",
         credentials: "include",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ text }),
