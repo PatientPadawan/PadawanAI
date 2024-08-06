@@ -17,9 +17,9 @@ const RootLayout = () => {
       <QueryClientProvider client={queryClient}>
         <div className="root-layout">
           <header>
-            <Link to="/">
+            <Link to="/" className="logo-link">
               <img src="/logo.png" alt="logo" className="logo" />
-              <span>PadawanAI</span>
+              <span className="title">PadawanAI</span>
             </Link>
             <div className="user">User Name</div>
             <SignedIn>

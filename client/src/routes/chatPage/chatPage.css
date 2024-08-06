@@ -24,11 +24,12 @@
 
       .message {
         padding: 1.25rem 0.5rem;
-        background-color: #2c2937;
-        border-radius: 1.25rem;
-        max-width: 75%;
-
+        max-width: 90%;
+        
         &.user {
+          max-width: 75%;
+          background-color: #2c2937;
+          border-radius: 1.25rem;
           align-self: flex-end;
         }
       }
