@@ -80,7 +80,6 @@ const NewPrompt = ({ data }) => {
       let responseText = "";
       for await (const chunk of result.stream) {
         const chunkText = chunk.text();
-        console.log(chunkText);
         responseText += chunkText;
         setAnswer(responseText);
       }
