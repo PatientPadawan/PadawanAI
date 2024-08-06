@@ -1,9 +1,9 @@
 .end-chat {
-    padding-bottom: 6.25rem;
+  padding-bottom: 6.25rem;
 }
 
 .new-form {
-  width: 50%;
+  width: 90%;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -16,13 +16,24 @@
   gap: 1.25rem;
   padding: 0rem 1.25rem;
 
+  @media (min-width: 540px) {
+    width: 75%;
+  }
+  @media (min-width: 768px) {
+    width: 50%;
+  }
+
   input {
     flex: 1;
-    padding: 1.25rem;
+    padding: 1.25rem 0;
     border: none;
     outline: none;
     background-color: transparent;
     color: #ececec;
+
+    @media (min-width: 540px) {
+      padding: 1.25rem;
+    }
   }
 
   button,
