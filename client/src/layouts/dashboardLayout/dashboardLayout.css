@@ -1,15 +1,22 @@
 .dashboard-layout {
   display: flex;
-  gap: 3.125rem;
+
   padding-top: 1.25rem;
   height: 100%;
+
+  @media (min-width: 541px) {
+    gap: 3.125rem;
+  }
 
   .menu {
     flex: 1;
   }
 
   .content {
-    flex: 4;
     background-color: #12101b;
+
+    @media (min-width: 541px) {
+      flex: 4;
+    }
   }
 }
