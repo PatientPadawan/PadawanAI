@@ -23,12 +23,12 @@
       }
 
       .message {
-        padding: 1.25rem 0;
+        padding: 1.25rem 0.5rem;
+        background-color: #2c2937;
+        border-radius: 1.25rem;
+        max-width: 75%;
 
         &.user {
-          background-color: #2c2937;
-          border-radius: 1.25rem;
-          max-width: 75%;
           align-self: flex-end;
         }
       }
