@@ -27,7 +27,7 @@ const UserInfo = () => {
   const displayName =
     user.username || user.primaryEmailAddress?.emailAddress || "";
 
-  return <div className="user">{displayName}</div>;
+  return <div className="user-name">{displayName}</div>;
 };
 
 const RootLayout = () => {
