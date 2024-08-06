@@ -57,12 +57,12 @@ const DashboardPage = () => {
             <span>Create a New Chat</span>
           </div>
           <div className="option">
-            <img src="/image.png" alt="create a new chat" />
+            <img src="/image.png" alt="analyze image" />
             <span>Analyze Images</span>
           </div>
           <div className="option">
-            <img src="/code.png" alt="create a new chat" />
-            <span>Help Me With My Code</span>
+            <img src="/code.png" alt="help me with code" />
+            <span>Help Me With Code</span>
           </div>
         </div>
       </div>
