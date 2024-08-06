@@ -57,9 +57,12 @@
   .right {
     flex: 1;
     display: flex;
-    align-items: center;
     justify-content: center;
     height: 100%;
+
+    @media (min-width: 768px) {
+      align-items: center;
+    }
   }
 
   .image-container {
