@@ -3,6 +3,10 @@
   flex-direction: column;
   height: 100%;
 
+  @media (max-width: 540px) {
+    display: none;
+  }
+
   hr {
     border: none;
     height: 0.125rem;
