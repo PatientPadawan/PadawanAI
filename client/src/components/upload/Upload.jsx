@@ -27,16 +27,15 @@ const Upload = ({ setImg }) => {
   const IKUploadRef = useRef(null);
 
   const onError = (err) => {
-    console.log("Error", err);
+    console.log("Error");
   };
 
   const onSuccess = (res) => {
-    console.log("Success", res);
     setImg((prev) => ({ ...prev, isLoading: false, dbData: res }));
   };
 
   const onUploadProgress = (progress) => {
-    console.log("Progress", progress);
+    console.log("Progress");
   };
 
   const onUploadStart = (evt) => {

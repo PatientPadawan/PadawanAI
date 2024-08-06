@@ -32,7 +32,7 @@ const DashboardPage = () => {
       navigate(`/dashboard/chats/${data.id}`);
     },
     onError: (error) => {
-      console.error("Mutation error:", error);
+      console.error("Mutation error");
     },
   });
 
