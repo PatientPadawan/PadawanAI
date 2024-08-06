@@ -137,7 +137,7 @@
 
   .terms {
     position: absolute;
-    bottom: 1.25rem;
+    bottom: 0.25rem;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -145,12 +145,16 @@
     align-items: center;
     gap: 1.25rem;
 
-    @media screen and (max-width: 768px) {
-      bottom: 1rem;
+    @media (min-width: 540px) {
+      .landing-page {
+        bottom: 0.625rem;
+      }
     }
 
-    @media screen and (max-width: 540px) {
-      bottom: 0.625rem;
+    @media (min-width: 768px) {
+      .landing-page {
+        bottom: 1.25rem;
+      }
     }
 
     img {
