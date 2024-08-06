@@ -20,7 +20,7 @@ const UserInfo = () => {
   const { isSignedIn, user } = useUser();
 
   if (!isSignedIn) {
-    return <div className="no-user">hello</div>;
+    return null;
   }
 
   // Display username if available, otherwise use email
